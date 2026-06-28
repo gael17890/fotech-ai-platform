@@ -1,0 +1,25 @@
+{
+  "supplier_id": "distributor-b",
+  "supplier_label": "Distributor B",
+  "description": "Pack-size differences. Concentration matches but pack does not. Tests hard filter on pack.",
+  "lines": [
+    {
+      "id": 1,
+      "text": "DOLXEN 500MG Tabletas c/20",
+      "candidates": [
+        { "id": 601, "name_in_db": "DOLXEN 500MG C/10 TABLETAS" },
+        { "id": 602, "name_in_db": "DOLXEN 500MG C/20 TABLETAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 602 }
+    },
+    {
+      "id": 2,
+      "text": "TRIBEDOCE Sol Iny c/3 AMPTAS",
+      "candidates": [
+        { "id": 611, "name_in_db": "TRIBEDOCE SOL INY C/3 AMPOLLAS" },
+        { "id": 612, "name_in_db": "TRIBEDOCE SOL INY C/6 AMPOLLAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 611 }
+    }
+  ]
+}

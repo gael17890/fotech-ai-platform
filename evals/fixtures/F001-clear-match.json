@@ -1,0 +1,36 @@
+{
+  "supplier_id": "distributor-a",
+  "supplier_label": "Distributor A",
+  "description": "Clear-match cases — top1 score very high. Tests the fast path.",
+  "lines": [
+    {
+      "id": 1,
+      "text": "DOLXEN 500MG Tabletas c/10",
+      "candidates": [
+        { "id": 101, "name_in_db": "DOLXEN 500MG C/10 TABLETAS" },
+        { "id": 102, "name_in_db": "DOLXEN 500MG C/20 TABLETAS" },
+        { "id": 103, "name_in_db": "PARACETAMOL 500MG C/10" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 101 }
+    },
+    {
+      "id": 2,
+      "text": "VOMISIN 50MG c/20 TABS",
+      "candidates": [
+        { "id": 201, "name_in_db": "VOMISIN 50MG C/20 TABLETAS" },
+        { "id": 202, "name_in_db": "VOMISIN GOTAS" },
+        { "id": 203, "name_in_db": "VOMISIN INY C/3 AMPOLLAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 201 }
+    },
+    {
+      "id": 3,
+      "text": "ATORLIP 20MG c/10 TABS",
+      "candidates": [
+        { "id": 301, "name_in_db": "ATORLIP 20MG C/10 TABLETAS" },
+        { "id": 302, "name_in_db": "ATORLIP 40MG C/10 TABLETAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 301 }
+    }
+  ]
+}

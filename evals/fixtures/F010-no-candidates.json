@@ -1,0 +1,19 @@
+{
+  "supplier_id": "distributor-d",
+  "supplier_label": "Distributor D",
+  "description": "No candidates at all (pipeline gave empty list). Tests the no-candidates fast path → new.",
+  "lines": [
+    {
+      "id": 1,
+      "text": "PRODUCTO_INVENTADO_NUEVO 100MG c/30",
+      "candidates": [],
+      "expected": { "decision": "new" }
+    },
+    {
+      "id": 2,
+      "text": "EXOTIC_BRAND_X 50ML",
+      "candidates": [],
+      "expected": { "decision": "new" }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "supplier_id": "distributor-a",
+  "supplier_label": "Distributor A",
+  "description": "Concentration mismatch. Same brand and pack but different strength — must NOT match.",
+  "lines": [
+    {
+      "id": 1,
+      "text": "ATORLIP 40MG c/10 TABS",
+      "candidates": [
+        { "id": 1001, "name_in_db": "ATORLIP 20MG C/10 TABLETAS" },
+        { "id": 1002, "name_in_db": "ATORLIP 40MG C/10 TABLETAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 1002 }
+    },
+    {
+      "id": 2,
+      "text": "GLIBENCLAMIDA 5MG c/30",
+      "candidates": [
+        { "id": 1011, "name_in_db": "GLIBENCLAMIDA 2.5MG C/30 TABLETAS" },
+        { "id": 1012, "name_in_db": "GLIBENCLAMIDA 5MG C/30 TABLETAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 1012 }
+    }
+  ]
+}

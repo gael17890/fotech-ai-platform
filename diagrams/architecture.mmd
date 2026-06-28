@@ -1,0 +1,70 @@
+%% FOTECH AI Platform — multi-agent architecture
+%% Render at https://mermaid.live or via `mmdc -i architecture.mmd -o architecture.svg`
+
+flowchart TB
+    Admin([👤 Pharmacy admin<br/>chat · voice · mobile])
+
+    Router{Intent Router<br/>regex L1 0-tok<br/>+ Haiku L2 fallback}
+
+    subgraph Agents [8 specialized agents]
+        BulkOnb[Bulk Onboarding<br/>AFF · most mature]
+        SoloOnb[Solo Onboarding]
+        Search[Search]
+        Sale[Sale]
+        Quote[Quote]
+        Restock[Restock]
+        Purchase[Purchase]
+        AdminA[Admin]
+    end
+
+    subgraph SubAgents [4 Haiku tactical sub-agents]
+        Identifier[IDENTIFIER<br/>extract pharma data]
+        Questioner[QUESTIONER<br/>ask the minimum]
+        Pharmacist[PHARMACIST<br/>clinical reasoning]
+        Validator[VALIDATOR<br/>check coherence]
+    end
+
+    subgraph Pipeline [AFF pipeline]
+        Extract[Extract<br/>Kimi K2.6]
+        Match[Match<br/>literal + LLM judge]
+        Investigate[Investigate<br/>Haiku + Tavily]
+        Fill[Fill 20+ fields<br/>Sonnet 4.6]
+    end
+
+    subgraph Cross [Cross-cutting services]
+        Memory[(Conversational memory<br/>tsvector Spanish)]
+        Aliases[(Alias learning<br/>continuous, no retrain)]
+        Cache[(LLM cache<br/>SHA-256 + model)]
+        PDP[PDP<br/>391 perms · 76 roles<br/>4093 entries · 30 SoD]
+    end
+
+    Admin --> Router
+    Router --> BulkOnb
+    Router --> SoloOnb
+    Router --> Search
+    Router --> Sale
+    Router --> Quote
+    Router --> Restock
+    Router --> Purchase
+    Router --> AdminA
+
+    BulkOnb --> Pipeline
+    Match --> SubAgents
+    Fill --> SubAgents
+
+    Agents -.- Cross
+    Pipeline -.- Cross
+
+    classDef admin fill:#1f6feb,stroke:#fff,color:#fff
+    classDef router fill:#a371f7,stroke:#fff,color:#fff
+    classDef agent fill:#2da44e,stroke:#fff,color:#fff
+    classDef sub fill:#bf8700,stroke:#fff,color:#fff
+    classDef pipe fill:#1b7c83,stroke:#fff,color:#fff
+    classDef cross fill:#cf222e,stroke:#fff,color:#fff
+
+    class Admin admin
+    class Router router
+    class BulkOnb,SoloOnb,Search,Sale,Quote,Restock,Purchase,AdminA agent
+    class Identifier,Questioner,Pharmacist,Validator sub
+    class Extract,Match,Investigate,Fill pipe
+    class Memory,Aliases,Cache,PDP cross

@@ -1,0 +1,48 @@
+%% LLM-as-judge flow — see docs/llm-judge-pattern.md
+%% Render at https://mermaid.live or with `mmdc -i llm-judge-flow.mmd -o llm-judge-flow.svg`
+
+flowchart TB
+    Start([Invoice line + candidates])
+    Alias{Alias known<br/>for this supplier?}
+    AliasHit[match via alias<br/>times_used >= 2<br/>~0.1ms · free]
+    Score[Score literal<br/>n-gram Jaccard<br/>~1ms · free]
+    Top1[Top-1 score?]
+    Clear[match · top1 clear<br/>top1 >= 0.95]
+    Margin[match · margin<br/>top1 >= 0.80<br/>and beats #2 by 0.20]
+    NewPath[new product<br/>top1 < 0.15]
+    Judge[LLM judge<br/>Claude Haiku 4.5<br/>~1.5s · $0.0019]
+    Verdict[Structured JSON:<br/>elegido · confianza · razon]
+    MatchOut[match]
+    NewOut[new]
+    AmbigOut[ambiguous<br/>human review]
+    Cache[(LLM cache<br/>SHA-256 by tenant+invoice+candidates+model)]
+
+    Start --> Alias
+    Alias -->|hit| AliasHit
+    AliasHit --> MatchOut
+    Alias -->|miss| Score
+    Score --> Top1
+    Top1 -->|>= 0.95| Clear
+    Clear --> MatchOut
+    Top1 -->|>= 0.80 + margin| Margin
+    Margin --> MatchOut
+    Top1 -->|< 0.15| NewPath
+    NewPath --> NewOut
+    Top1 -->|ambiguous middle| Judge
+    Judge <-->|hit / miss| Cache
+    Judge --> Verdict
+    Verdict -->|elegido = 1/2/3| MatchOut
+    Verdict -->|elegido = ninguno| NewOut
+    Verdict -->|elegido = ambiguo| AmbigOut
+
+    classDef fast fill:#2da44e,stroke:#fff,color:#fff
+    classDef llm fill:#a371f7,stroke:#fff,color:#fff
+    classDef decision fill:#1f6feb,stroke:#fff,color:#fff
+    classDef out fill:#bf8700,stroke:#fff,color:#fff
+    classDef cache fill:#cf222e,stroke:#fff,color:#fff
+
+    class AliasHit,Score,Clear,Margin,NewPath fast
+    class Judge,Verdict llm
+    class Alias,Top1 decision
+    class MatchOut,NewOut,AmbigOut out
+    class Cache cache

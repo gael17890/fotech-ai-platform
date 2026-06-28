@@ -1,0 +1,25 @@
+{
+  "supplier_id": "distributor-b",
+  "supplier_label": "Distributor B",
+  "description": "TAB / CAP interchangeability tests. The judge prompt allows TAB ~ CAP only if everything else matches exactly.",
+  "lines": [
+    {
+      "id": 1,
+      "text": "OMEPRAZOL 20MG c/14 CAPS",
+      "candidates": [
+        { "id": 1101, "name_in_db": "OMEPRAZOL 20MG C/14 TABLETAS" },
+        { "id": 1102, "name_in_db": "OMEPRAZOL 20MG C/14 CAPSULAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 1102 }
+    },
+    {
+      "id": 2,
+      "text": "ESOMEPRAZOL 40MG c/30 TABS",
+      "candidates": [
+        { "id": 1111, "name_in_db": "ESOMEPRAZOL 40MG C/30 CAPSULAS" }
+      ],
+      "expected": { "decision": "ambiguous" },
+      "note": "Only one candidate that differs only in TAB vs CAP — judge should mark ambiguous, not auto-match."
+    }
+  ]
+}

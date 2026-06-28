@@ -1,0 +1,38 @@
+{
+  "name": "fotech-ai-platform",
+  "version": "0.1.0",
+  "description": "Multi-agent AI platform for pharmaceutical inventory management — public showcase of patterns and architecture",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --test tests/",
+    "eval": "node evals/runner.js",
+    "eval:no-llm": "node evals/runner.js --no-llm"
+  },
+  "keywords": [
+    "ai",
+    "multi-agent",
+    "llm-as-judge",
+    "rag",
+    "healthcare",
+    "pharma",
+    "claude",
+    "anthropic",
+    "mcp",
+    "augmented-engineering"
+  ],
+  "author": "Gael Alberto Franco Ortiz <gael17890@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gael17890/fotech-ai-platform.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  },
+  "optionalDependencies": {
+    "dotenv": "^16.4.7"
+  }
+}

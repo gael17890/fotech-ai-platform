@@ -1,0 +1,25 @@
+{
+  "supplier_id": "distributor-b",
+  "supplier_label": "Distributor B",
+  "description": "Genuinely new products. Top1 score very low. Tests the new-product fast path.",
+  "lines": [
+    {
+      "id": 1,
+      "text": "AGUA OXIGENADA DERMOCLEEN 100ML",
+      "candidates": [
+        { "id": 501, "name_in_db": "AGUA OXIGENADA PROTEC 100 ML" },
+        { "id": 502, "name_in_db": "AGUA OXIGENADA 1000ML" }
+      ],
+      "expected": { "decision": "new" }
+    },
+    {
+      "id": 2,
+      "text": "MEDICAMENTO XYZ EXOTICO 250MG",
+      "candidates": [
+        { "id": 511, "name_in_db": "DOLXEN 500MG C/10 TABLETAS" },
+        { "id": 512, "name_in_db": "PARACETAMOL 500MG C/10" }
+      ],
+      "expected": { "decision": "new" }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "supplier_id": "distributor-c",
+  "supplier_label": "Distributor C",
+  "description": "Genuinely ambiguous cases that the literal scorer cannot resolve. Tests the LLM judge fallback.",
+  "lines": [
+    {
+      "id": 1,
+      "text": "METOCLOPRAMIDA (Neolpharma) Sol Iny c/6",
+      "candidates": [
+        { "id": 701, "name_in_db": "METOCLOPRAMIDA 10MG SOL INY C/6" },
+        { "id": 702, "name_in_db": "METOCLOPRAMIDA 10MG SOL INY C/12" },
+        { "id": 703, "name_in_db": "METOCLOPRAMIDA GTS PEDIATRICAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 701 }
+    },
+    {
+      "id": 2,
+      "text": "BENEVENTOL (CEFIXIMA) 400MG c/10 CAPS",
+      "candidates": [
+        { "id": 711, "name_in_db": "BENEVENTOL 400MG C/10 CAPSULAS" },
+        { "id": 712, "name_in_db": "CEFIXIMA GENERICA 400MG C/10" },
+        { "id": 713, "name_in_db": "BENEVENTOL 200MG C/10 CAPSULAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 711 }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "supplier_id": "distributor-a",
+  "supplier_label": "Distributor A",
+  "description": "Form differences (TAB vs SUSP, SUSP vs SOL). Tests presentation synonyms + hard filters.",
+  "lines": [
+    {
+      "id": 1,
+      "text": "BRUNADOL Suspension 100 ml",
+      "candidates": [
+        { "id": 411, "name_in_db": "BRUNADOL C/10 TABLETAS" },
+        { "id": 412, "name_in_db": "BRUNADOL SUSP 100ML" },
+        { "id": 413, "name_in_db": "DECOSIL SUSPENSION 100 ML" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 412 }
+    },
+    {
+      "id": 2,
+      "text": "KENZOFLEX SOL OFT",
+      "candidates": [
+        { "id": 421, "name_in_db": "KENZOFLEX SOLUCION ORAL" },
+        { "id": 422, "name_in_db": "KENZOFLEX OFTALMICA SOL" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 422 }
+    },
+    {
+      "id": 3,
+      "text": "DOLO-NEUROBION 1 TABS c/10",
+      "candidates": [
+        { "id": 431, "name_in_db": "DOLO-NEUROBION C/10 TABLETAS" },
+        { "id": 432, "name_in_db": "DOLO-NEUROBION FORTE C/10 TABLETAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 431 }
+    }
+  ]
+}

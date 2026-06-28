@@ -1,0 +1,26 @@
+{
+  "run_at": "2026-06-28T18:45:43.310Z",
+  "llm_enabled": false,
+  "matcher_version": "v3-llm",
+  "fixtures": 10,
+  "lines_total": 23,
+  "by_decision": {
+    "match": {
+      "count": 8,
+      "percent": 34.8
+    },
+    "new": {
+      "count": 3,
+      "percent": 13
+    },
+    "ambiguous": {
+      "count": 12,
+      "percent": 52.2
+    }
+  },
+  "ground_truth": {
+    "lines_with_truth": 23,
+    "correct": 12,
+    "accuracy_percent": 52.2
+  }
+}

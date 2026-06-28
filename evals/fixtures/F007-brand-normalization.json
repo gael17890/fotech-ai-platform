@@ -1,0 +1,25 @@
+{
+  "supplier_id": "distributor-d",
+  "supplier_label": "Distributor D",
+  "description": "Brand normalization edge cases. Suffix variations (-DE vs -D), accent handling, and parenthetical removal.",
+  "lines": [
+    {
+      "id": 1,
+      "text": "DOLFORT-DE 500MG c/10",
+      "candidates": [
+        { "id": 901, "name_in_db": "DOLFORT-D 500MG C/10" },
+        { "id": 902, "name_in_db": "DOLFORT 500MG C/10" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 901 }
+    },
+    {
+      "id": 2,
+      "text": "ANTIFLU-DES Tabs c/10",
+      "candidates": [
+        { "id": 911, "name_in_db": "ANTIFLU-DES C/10 TABLETAS" },
+        { "id": 912, "name_in_db": "ANTIFLU SOL C/120ML" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 911 }
+    }
+  ]
+}

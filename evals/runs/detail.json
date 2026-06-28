@@ -1,0 +1,325 @@
+[
+  {
+    "fixture": "F001-clear-match.json",
+    "supplier_id": "distributor-a",
+    "lines_total": 3,
+    "results": [
+      {
+        "line_id": 1,
+        "text": "DOLXEN 500MG Tabletas c/10",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.7272727272727273,
+        "margin": 0.14393939393939392,
+        "expected_decision": "match",
+        "correct": false
+      },
+      {
+        "line_id": 2,
+        "text": "VOMISIN 50MG c/20 TABS",
+        "decision": "match",
+        "via": "score_top1_clear",
+        "confidence": 100,
+        "top1_score": 1,
+        "margin": 0.7272727272727273,
+        "expected_decision": "match",
+        "correct": true
+      },
+      {
+        "line_id": 3,
+        "text": "ATORLIP 20MG c/10 TABS",
+        "decision": "match",
+        "via": "score_top1_clear",
+        "confidence": 100,
+        "top1_score": 1,
+        "margin": 0.2727272727272727,
+        "expected_decision": "match",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "fixture": "F002-form-and-route.json",
+    "supplier_id": "distributor-a",
+    "lines_total": 3,
+    "results": [
+      {
+        "line_id": 1,
+        "text": "BRUNADOL Suspension 100 ml",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.75,
+        "margin": 0.2916666666666667,
+        "expected_decision": "match",
+        "correct": false
+      },
+      {
+        "line_id": 2,
+        "text": "KENZOFLEX SOL OFT",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.7222222222222222,
+        "margin": 0.05555555555555558,
+        "expected_decision": "match",
+        "correct": false
+      },
+      {
+        "line_id": 3,
+        "text": "DOLO-NEUROBION 1 TABS c/10",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.6923076923076923,
+        "margin": 0.1298076923076923,
+        "expected_decision": "match",
+        "correct": false
+      }
+    ]
+  },
+  {
+    "fixture": "F003-new-products.json",
+    "supplier_id": "distributor-b",
+    "lines_total": 2,
+    "results": [
+      {
+        "line_id": 1,
+        "text": "AGUA OXIGENADA DERMOCLEEN 100ML",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.5483870967741935,
+        "margin": 0.1733870967741935,
+        "expected_decision": "new",
+        "correct": false
+      },
+      {
+        "line_id": 2,
+        "text": "MEDICAMENTO XYZ EXOTICO 250MG",
+        "decision": "new",
+        "via": "score_low",
+        "confidence": 98,
+        "top1_score": 0.022222222222222223,
+        "margin": 0.000483091787439615,
+        "expected_decision": "new",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "fixture": "F004-pack-differs.json",
+    "supplier_id": "distributor-b",
+    "lines_total": 2,
+    "results": [
+      {
+        "line_id": 1,
+        "text": "DOLXEN 500MG Tabletas c/20",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.7272727272727273,
+        "margin": 0.14393939393939392,
+        "expected_decision": "match",
+        "correct": false
+      },
+      {
+        "line_id": 2,
+        "text": "TRIBEDOCE Sol Iny c/3 AMPTAS",
+        "decision": "match",
+        "via": "score_top1_clear",
+        "confidence": 100,
+        "top1_score": 1,
+        "margin": 0.23076923076923073,
+        "expected_decision": "match",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "fixture": "F005-ambiguous-llm.json",
+    "supplier_id": "distributor-c",
+    "lines_total": 2,
+    "results": [
+      {
+        "line_id": 1,
+        "text": "METOCLOPRAMIDA (Neolpharma) Sol Iny c/6",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.5609756097560976,
+        "margin": 0.04934770277935341,
+        "expected_decision": "match",
+        "correct": false
+      },
+      {
+        "line_id": 2,
+        "text": "BENEVENTOL (CEFIXIMA) 400MG c/10 CAPS",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.6666666666666666,
+        "margin": 0.09523809523809523,
+        "expected_decision": "match",
+        "correct": false
+      }
+    ]
+  },
+  {
+    "fixture": "F006-differentiators.json",
+    "supplier_id": "distributor-c",
+    "lines_total": 3,
+    "results": [
+      {
+        "line_id": 1,
+        "text": "DOLO-NEUROBION FORTE c/30 TABS",
+        "decision": "match",
+        "via": "score_top1_clear",
+        "confidence": 100,
+        "top1_score": 1,
+        "margin": 0.2857142857142857,
+        "expected_decision": "match",
+        "correct": true
+      },
+      {
+        "line_id": 2,
+        "text": "TYLENOL PEDIATRICO Susp 100ML",
+        "decision": "match",
+        "via": "score_top1_clear",
+        "confidence": 100,
+        "top1_score": 1,
+        "margin": 0.4642857142857143,
+        "expected_decision": "match",
+        "correct": true
+      },
+      {
+        "line_id": 3,
+        "text": "FERRANINA PLUS c/30 CAPS",
+        "decision": "match",
+        "via": "score_top1_clear",
+        "confidence": 100,
+        "top1_score": 1,
+        "margin": 0.31818181818181823,
+        "expected_decision": "match",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "fixture": "F007-brand-normalization.json",
+    "supplier_id": "distributor-d",
+    "lines_total": 2,
+    "results": [
+      {
+        "line_id": 1,
+        "text": "DOLFORT-DE 500MG c/10",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.7619047619047619,
+        "margin": 0.011904761904761862,
+        "expected_decision": "match",
+        "correct": false
+      },
+      {
+        "line_id": 2,
+        "text": "ANTIFLU-DES Tabs c/10",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.7142857142857143,
+        "margin": 0.417989417989418,
+        "expected_decision": "match",
+        "correct": false
+      }
+    ]
+  },
+  {
+    "fixture": "F008-concentration.json",
+    "supplier_id": "distributor-a",
+    "lines_total": 2,
+    "results": [
+      {
+        "line_id": 1,
+        "text": "ATORLIP 40MG c/10 TABS",
+        "decision": "match",
+        "via": "score_top1_clear",
+        "confidence": 100,
+        "top1_score": 1,
+        "margin": 0.2727272727272727,
+        "expected_decision": "match",
+        "correct": true
+      },
+      {
+        "line_id": 2,
+        "text": "GLIBENCLAMIDA 5MG c/30",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.8333333333333334,
+        "margin": 0.12962962962962965,
+        "expected_decision": "match",
+        "correct": false
+      }
+    ]
+  },
+  {
+    "fixture": "F009-tab-cap.json",
+    "supplier_id": "distributor-b",
+    "lines_total": 2,
+    "results": [
+      {
+        "line_id": 1,
+        "text": "OMEPRAZOL 20MG c/14 CAPS",
+        "decision": "match",
+        "via": "score_top1_clear",
+        "confidence": 100,
+        "top1_score": 1,
+        "margin": 0.25,
+        "expected_decision": "match",
+        "correct": true
+      },
+      {
+        "line_id": 2,
+        "text": "ESOMEPRAZOL 40MG c/30 TABS",
+        "decision": "ambiguous",
+        "via": "judge_disabled",
+        "confidence": 0,
+        "top1_score": 0.7692307692307693,
+        "margin": 0.7692307692307693,
+        "expected_decision": "ambiguous",
+        "correct": true
+      }
+    ]
+  },
+  {
+    "fixture": "F010-no-candidates.json",
+    "supplier_id": "distributor-d",
+    "lines_total": 2,
+    "results": [
+      {
+        "line_id": 1,
+        "text": "PRODUCTO_INVENTADO_NUEVO 100MG c/30",
+        "decision": "new",
+        "via": "no_candidates",
+        "confidence": 100,
+        "top1_score": 0,
+        "margin": 0,
+        "expected_decision": "new",
+        "correct": true
+      },
+      {
+        "line_id": 2,
+        "text": "EXOTIC_BRAND_X 50ML",
+        "decision": "new",
+        "via": "no_candidates",
+        "confidence": 100,
+        "top1_score": 0,
+        "margin": 0,
+        "expected_decision": "new",
+        "correct": true
+      }
+    ]
+  }
+]

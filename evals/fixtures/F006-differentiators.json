@@ -1,0 +1,34 @@
+{
+  "supplier_id": "distributor-c",
+  "supplier_label": "Distributor C",
+  "description": "Differentiator words (FORTE, PLUS, PEDIATRICO) must distinguish products that otherwise look identical.",
+  "lines": [
+    {
+      "id": 1,
+      "text": "DOLO-NEUROBION FORTE c/30 TABS",
+      "candidates": [
+        { "id": 801, "name_in_db": "DOLO-NEUROBION C/30 TABLETAS" },
+        { "id": 802, "name_in_db": "DOLO-NEUROBION FORTE C/30 TABLETAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 802 }
+    },
+    {
+      "id": 2,
+      "text": "TYLENOL PEDIATRICO Susp 100ML",
+      "candidates": [
+        { "id": 811, "name_in_db": "TYLENOL SUSP 100ML" },
+        { "id": 812, "name_in_db": "TYLENOL PEDIATRICO SUSP 100ML" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 812 }
+    },
+    {
+      "id": 3,
+      "text": "FERRANINA PLUS c/30 CAPS",
+      "candidates": [
+        { "id": 821, "name_in_db": "FERRANINA C/30 CAPSULAS" },
+        { "id": 822, "name_in_db": "FERRANINA PLUS C/30 CAPSULAS" }
+      ],
+      "expected": { "decision": "match", "catalog_product_id": 822 }
+    }
+  ]
+}
