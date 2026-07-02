@@ -1,6 +1,6 @@
 # FOTECH AI Platform
 
-> Multi-agent AI platform for pharmaceutical inventory management. Sole founder, real pilot client, real production patterns.
+> Multi-agent AI platform for pharmaceutical inventory management. Built solo. Piloted against a real pharmacy's catalog.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node](https://img.shields.io/badge/node-%E2%89%A518.0.0-green.svg)](https://nodejs.org/)
@@ -9,17 +9,17 @@
 
 ---
 
-## What this is
+## About this repo
 
-A **public, sanitized showcase** of the architecture and patterns behind FOTECH — a multi-agent AI platform I built (alone) for pharmaceutical distributors and pharmacies in Mexico. The full production system is private (real client data, business logic, regulatory configurations). What lives here is **the reusable engineering**: the patterns, the architectural decisions, the eval methodology, the code that solves the hard problems.
+This is a sanitized, public slice of FOTECH — a multi-agent AI platform I've been building alone for pharmacies and pharmaceutical distributors in Mexico. The production system is closed source (real client data, live regulatory config, business logic). What I've pulled out and cleaned up for this repo is the engineering that generalizes: the patterns, the decisions I had to make and why, the eval methodology, the pieces of code that took the most thought.
 
-This repo exists so that someone reviewing my work can see *how I think* and *how I build*, not just read claims on a résumé.
+I put it together so anyone looking at my work can go past the résumé bullets and actually see how I approach a problem.
 
 ## The problem in 30 seconds
 
-Mexican pharmacies and distributors receive invoices from dozens of suppliers, each with their own naming conventions for the same drug. A single product like *paracetamol 500mg c/10* might appear as `DOLXEN 500MG C/10 TABLETAS`, `DOLXEN 500MG Tabletas c/10`, `dolxen tab. 500mg cja/10`, or any number of variations. Manually mapping these to a catalog is slow, error-prone, and doesn't scale. Existing solutions either over-match (false positives that corrupt inventory) or over-flag (admins drown in ambiguity queues).
+Mexican pharmacies and distributors get invoices from dozens of suppliers, and no two suppliers name the same product the same way. Something as ordinary as *paracetamol 500mg c/10* shows up as `DOLXEN 500MG C/10 TABLETAS`, `DOLXEN 500MG Tabletas c/10`, `dolxen tab. 500mg cja/10`, and about fifteen other variations. Mapping all of that back to a canonical catalog by hand doesn't scale. And the tools that try to do it either over-match (silent false positives that corrupt inventory) or over-flag (the admin's review queue explodes).
 
-The platform solves this — and a dozen other pharmacy workflows — through a **multi-agent system** where natural language ("I sold 200 of paracetamol", "what ran out today", "process this supplier's invoice") gets routed to a specialized agent that handles the task end to end.
+The platform handles this — plus a bunch of other pharmacy workflows — by treating the admin's natural language ("I sold 200 of paracetamol", "what ran out today", "process this supplier's invoice") as the primary interface, and routing each request to a specialized agent that owns that job end to end.
 
 ## Architecture at a glance
 
@@ -67,41 +67,41 @@ The platform solves this — and a dozen other pharmacy workflows — through a 
 
 | Area | What you'll find |
 |---|---|
-| [`docs/matcher-evolution.md`](docs/matcher-evolution.md) | How the product matcher went from 27% accuracy with hand-rolled rules to **10× lower ambiguity** with hybrid algorithm + LLM-as-judge. The full evolution story with real numbers. |
-| [`docs/llm-judge-pattern.md`](docs/llm-judge-pattern.md) | The LLM-as-judge pattern: when to use it, when *not* to, and how to ship it cheaply (~$0.0019 per decision). |
+| [`docs/matcher-evolution.md`](docs/matcher-evolution.md) | How the product matcher went from 27% with hand-rolled rules to **10× less ambiguity** with a hybrid algorithm + LLM judge. The whole story with real numbers, including the fix I had to roll back. |
+| [`docs/llm-judge-pattern.md`](docs/llm-judge-pattern.md) | The LLM-as-judge pattern, when it fits, when it doesn't, and how I ship it cheaply (~$0.0019 a decision). |
 | [`docs/multi-agent-architecture.md`](docs/multi-agent-architecture.md) | The 8 specialized agents, the intent router, the 4 Haiku tactical sub-agents. |
-| [`docs/memory-and-learning.md`](docs/memory-and-learning.md) | Lexical RAG with PostgreSQL `tsvector` (Spanish). Continuous learning without retraining. |
-| [`docs/augmented-engineering.md`](docs/augmented-engineering.md) | My dev environment: Claude Code + Gemini CLI orchestrated through custom MCP connectors and async messaging. 5-10× faster development. |
+| [`docs/memory-and-learning.md`](docs/memory-and-learning.md) | Lexical RAG with PostgreSQL `tsvector` (Spanish). Continuous learning without retraining anything. |
+| [`docs/augmented-engineering.md`](docs/augmented-engineering.md) | My dev setup: Claude Code + Gemini CLI wired together through two custom MCP connectors and an async mailbox. It's the reason a single developer can ship at this pace. |
 | [`docs/rbac-architecture.md`](docs/rbac-architecture.md) | Bank-grade RBAC + ABAC + ReBAC in Postgres: 391 atomic permissions, 76 roles, 4,093 role-permission entries, 30 SoD rules. |
-| [`docs/production-infrastructure.md`](docs/production-infrastructure.md) | The 8 production containers including dedicated PDP (Policy Decision Point), Keycloak IAM, and Voice Agent v1. |
-| [`docs/decisions/`](docs/decisions/) | Architecture Decision Records (ADRs) — why each major choice was made and what was rejected. |
-| [`src/matcher/`](src/matcher/) | The matcher code (sanitized): score-literal, LLM judge, hybrid orchestrator. |
-| [`src/memory/`](src/memory/) | The lexical RAG and alias-learning code (sanitized). |
-| [`src/cache/`](src/cache/) | LLM inference cache pattern with SHA-256 hashing and kill-switches. |
-| [`src/router/`](src/router/) | Intent router (regex Layer 1 + LLM fallback). |
-| [`evals/`](evals/) | Reproducible evaluation suite with anonymized fixtures and the runner that produces real `summary.json` outputs. |
+| [`docs/production-infrastructure.md`](docs/production-infrastructure.md) | The 8 production containers, including a dedicated PDP (Policy Decision Point), Keycloak IAM, and Voice Agent v1. |
+| [`docs/decisions/`](docs/decisions/) | ADRs — why the big calls were made, what got rejected, and what it cost. |
+| [`src/matcher/`](src/matcher/) | The matcher code, sanitized: score-literal, the LLM judge, the orchestrator that ties them together. |
+| [`src/memory/`](src/memory/) | The lexical RAG and alias-learning code, sanitized. |
+| [`src/cache/`](src/cache/) | The LLM inference cache: SHA-256 keyed, kill-switch aware. |
+| [`src/router/`](src/router/) | The intent router (regex L1 + LLM fallback). |
+| [`evals/`](evals/) | A reproducible eval suite with anonymized fixtures and the runner that produces the real `summary.json`. Run it yourself. |
 
 ## Key results (with evidence)
 
 | Claim | Where to verify in this repo |
 |---|---|
-| Hybrid algorithm + LLM judge reduces ambiguity **10×** (11.5% → 1.1%) | [`docs/matcher-evolution.md`](docs/matcher-evolution.md) + [`evals/runs/`](evals/runs/) |
+| Hybrid algorithm + LLM judge cuts ambiguity **10×** (11.5% → 1.1%) | [`docs/matcher-evolution.md`](docs/matcher-evolution.md) + [`evals/runs/`](evals/runs/) |
 | LLM inference cache cuts cost ~80% | [`src/cache/llm-cache.js`](src/cache/llm-cache.js) + [`docs/decisions/004-cache-strategy.md`](docs/decisions/004-cache-strategy.md) |
 | ~$0.0019 USD per LLM decision (Claude Haiku 4.5) | [`src/matcher/juez-llm.js`](src/matcher/juez-llm.js) — pricing table & cost tracking |
 | Continuous learning without model retraining | [`src/memory/alias-learning.js`](src/memory/alias-learning.js) + schema |
 | 391 atomic permissions, 76 roles, 4,093 entries, 30 SoD rules | [`docs/rbac-architecture.md`](docs/rbac-architecture.md) + sample schemas |
 
-## What's NOT here (and why)
+## What's not here (and why)
 
-This is a showcase, not the production system:
+A quick note on the boundary I drew:
 
-- **No real client data.** Fixtures are anonymized; supplier names are generic (Distributor A/B/C/D).
-- **No regulatory configurations for Mexico (COFEPRIS) in detail.** Mentioned in docs, not weaponized.
-- **No business logic specific to the ERP backend.** The Odoo integration is private.
-- **No production prompts in full.** Prompt structure shown, full prompts redacted.
-- **No deployment scripts, secrets, infrastructure-as-code.** Diagrammed, not provided.
+- No real client data. The fixtures are anonymized and the suppliers are labeled `Distributor A/B/C/D`.
+- No detailed regulatory config for Mexico (COFEPRIS). It's mentioned in the docs, not spelled out.
+- No business logic specific to the ERP backend. The Odoo integration stays private.
+- No production prompts in full. You can see the structure, not the wording.
+- No deploy scripts, no secrets, no infrastructure-as-code. Diagrammed only.
 
-If you're a recruiter or hiring manager and want a live demo or deeper code review, [reach out](mailto:gael17890@gmail.com).
+If you're hiring and want a live demo or a deeper code walk-through, [drop me a line](mailto:gael17890@gmail.com).
 
 ## Tech stack
 
@@ -109,11 +109,11 @@ If you're a recruiter or hiring manager and want a live demo or deeper code revi
 **Backend**: Node.js, Python, PostgreSQL (`pgvector`, `ltree`, `tsvector`)
 **Frontend**: React (Vite), Vue.js
 **Infra**: Docker, Oracle Cloud Infrastructure (ARM), Contabo VPS, Keycloak IAM, nginx
-**Dev tooling**: Claude Code + Gemini CLI orchestrated via custom MCP connectors
+**Dev tooling**: Claude Code + Gemini CLI wired through custom MCP connectors
 
 ## About the author
 
-[Gael Alberto Franco Ortiz](https://linkedin.com/in/gael-alberto-franco-ortiz-165a6a418) — Sole Founder and AI Engineer building enterprise SaaS for Mexican pharma. CS50 (Harvard) certified. Available 100% remote for AI Engineer roles, especially in healthcare. Reach out: gael17890@gmail.com.
+[Gael Alberto Franco Ortiz](https://linkedin.com/in/gael-alberto-franco-ortiz-165a6a418) — Sole Founder and AI Engineer building enterprise SaaS for Mexican pharma. CS50 (Harvard) certified. Open to 100% remote AI Engineer roles, especially in healthcare. Reach me at gael17890@gmail.com.
 
 ---
 

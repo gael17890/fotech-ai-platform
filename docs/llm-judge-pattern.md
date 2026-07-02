@@ -1,6 +1,6 @@
 # The LLM-as-Judge Pattern
 
-A practical guide to using an LLM as a tie-breaker instead of as a primary classifier. Real numbers, real code, real pitfalls.
+A practical guide to using an LLM as a tie-breaker instead of a primary classifier. Real numbers, real code, real pitfalls.
 
 ## The pattern in 30 seconds
 
@@ -13,39 +13,39 @@ Input ──→ Deterministic scorer ──→ Decision:
                                     └─ AMBIGUOUS → LLM judge (~$0.002, ~1.5s)
 ```
 
-You pay LLM cost only on the ambiguous slice, which is usually 10–20% of the workload. The result is a system that is **as accurate as the LLM, as fast as the algorithm, and as cheap as the cache hit rate**.
+You pay LLM cost only on the ambiguous slice, which usually sits around 10–20% of the workload. The result is a system that's **as accurate as the LLM, as fast as the algorithm, and as cheap as the cache hit rate**.
 
-In production at FOTECH, this pattern drove **ambiguity from 11.5% to 1.1%** in product matching while keeping cost at ~$0.0019 per ambiguous decision.
+In FOTECH's production matcher, this pattern brought **ambiguity from 11.5% down to 1.1%** in product matching while holding cost at ~$0.0019 per ambiguous decision.
 
 ## When it fits
 
-This pattern works well when:
+The pattern works well when:
 
-1. **A deterministic score correlates strongly with the right answer.** You don't need the LLM to do the whole problem — just the close calls.
-2. **The judgement is shallow.** The LLM only sees a few candidates and picks one, plus a confidence and a reason. It doesn't need to reason at multi-step depth.
-3. **Errors have asymmetric cost.** False positives are expensive (corrupted data), false negatives are cheap (the admin reviews them). You want a binary "I'm sure" / "I'm not" gate, which the LLM excels at.
-4. **The domain has lexical equivalences that don't fit regex.** `TAB ≈ CAP only if everything else matches exactly`, `pediatric ≠ adult even if same molecule`, etc.
+1. **A deterministic score correlates strongly with the right answer.** The LLM doesn't need to do the whole problem — just the close calls.
+2. **The judgement is shallow.** The LLM sees a few candidates and picks one, plus a confidence and a reason. No deep multi-step reasoning needed.
+3. **Errors have asymmetric cost.** False positives are expensive (corrupted data); false negatives are cheap (the admin reviews them). You want a binary "I'm sure" / "I'm not" gate, and the LLM is good at that.
+4. **The domain has lexical equivalences that don't fit regex.** `TAB ≈ CAP only if everything else matches exactly`, `pediatric ≠ adult even if same molecule`, that kind of thing.
 
-Examples where it fits beyond pharma:
+Places where it fits beyond pharma:
 
 - Vendor catalog reconciliation
 - ICD-10 / SNOMED clinical code lookup
 - Marketplace product matching
 - Legal citation disambiguation
-- Customer support ticket routing on the boundary cases
+- Customer-support ticket routing on the boundary cases
 
 ## When it doesn't fit
 
 Skip this pattern when:
 
-- **The deterministic scorer is bad.** If the algorithm can't reach 80%+ on the easy cases, you'll send most queries to the LLM and the cost wins disappear.
-- **You need multi-step reasoning.** The judge should make one shallow decision. If the LLM needs to chain together 5 facts, you're describing a different pattern (an agent, not a judge).
-- **The answer needs to be the same across all clients.** A judge with a custom prompt can be biased by client-specific rules. If you need strict regulatory parity, deterministic is safer.
-- **Cost or latency is not a constraint.** If you can afford to call the LLM on everything, you might as well do it (fewer moving parts).
+- **The deterministic scorer is bad.** If the algorithm can't reach 80%+ on the easy cases, most queries end up in the LLM and the cost savings evaporate.
+- **You need multi-step reasoning.** The judge is supposed to make one shallow decision. If it has to chain five facts together, that's a different pattern (an agent, not a judge).
+- **The answer has to be identical across all clients.** A judge with a custom prompt can be swayed by client-specific rules. If strict regulatory parity is a hard requirement, deterministic is safer.
+- **Cost or latency doesn't matter.** If you can afford to call the LLM on every input, you might as well — fewer moving parts.
 
 ## Implementation
 
-The full implementation lives in [`src/matcher/juez-llm.js`](../src/matcher/juez-llm.js). Here are the parts that matter.
+The full implementation is in [`src/matcher/juez-llm.js`](../src/matcher/juez-llm.js). The parts that matter:
 
 ### 1. The orchestrator decides whether to call the judge
 
@@ -72,7 +72,7 @@ async function decide({ invoiceLine, candidates, tenantId }) {
 }
 ```
 
-Threshold values come from running the eval suite and looking at the score distribution at boundaries. They're not free parameters — they were tuned empirically over 88 real invoices.
+The threshold values come from running the eval suite and looking at score distributions at the boundaries. They're not free parameters — they're tuned empirically over 88 real invoices.
 
 ### 2. The judge is a strict JSON oracle
 
@@ -114,7 +114,7 @@ PARENTHETICALS in invoice:
 Always respond in valid JSON, no extra text, no markdown.`;
 ```
 
-The output shape is small and strict:
+Output shape is small and strict:
 
 ```json
 { "elegido": 1, "confianza": 98, "razon": "same brand, conc, pack, form; #2 differs in pack" }
@@ -133,7 +133,7 @@ function calculateHash(tenantId, invoice, candidates, model) {
 }
 ```
 
-Including the model in the hash means I can A/B test models without one's decisions contaminating the other's cache. The cache lives in PostgreSQL (one table, ~5 columns) so it survives restarts and gives me an audit log for free.
+Putting the model in the hash means I can A/B test models without one poisoning the other's cache. The cache lives in PostgreSQL (one table, ~5 columns), so it survives restarts and gives me an audit log for free.
 
 ### 4. Kill switch on insufficient budget
 
@@ -144,7 +144,7 @@ if (status === 402 || errorMessage.includes('insufficient') || errorMessage.incl
 }
 ```
 
-Before this, a billing problem would cause every line to fail individually and the runner would still try to call the API thousands of times. Now the first 402 trips a global flag and everything else returns a graceful fallback without making API calls.
+Before this, a billing problem meant every line failed individually and the runner would still fire thousands of API calls. Now the first 402 trips a global flag and everything else returns a graceful fallback without hitting the API.
 
 ## Numbers from production
 
@@ -154,44 +154,44 @@ On the FOTECH matcher (88 invoices, partial run of 543 lines):
 |---|---|
 | Cost per LLM call | $0.0019 (Claude Haiku 4.5) |
 | Latency per LLM call | ~1.5s (p50), ~3.5s (p95) |
-| Cache hit rate after warm-up | ~50% (stabilizing higher as the catalog converges) |
+| Cache hit rate after warm-up | ~50% (climbing as the catalog stabilizes) |
 | % of lines that need the judge | ~40% on this dataset (depends on supplier mix) |
 | Ambiguity rate before pattern | 11.5% |
 | Ambiguity rate with pattern | 1.1% |
 | Cost reduction vs LLM-on-everything | ~60% (the algorithm handles 60% of lines for free) |
 
-For a small client doing 1,000 invoices/month at 25 lines each (25,000 lines), the LLM bill is roughly **$10-15/month**. For an enterprise with 100,000 lines/month, it scales linearly. The cache pushes the effective number lower over time as the same products repeat.
+For a small client running 1,000 invoices/month at 25 lines each (25,000 lines), the LLM bill is around **$10-15/month**. For an enterprise at 100,000 lines/month, it scales linearly. The cache pushes the effective number lower over time as the same products keep showing up.
 
 ## Pitfalls I hit
 
 ### 1. The first prompt was too short
 
-The first version of the system prompt was ~150 tokens with no examples. The judge was confidently wrong on ambiguous calls. The fix was to **add 4 worked examples** at the end of the prompt covering the common edge cases (parentheticals, differentiators, route mismatches). The prompt grew to ~650 tokens but the decision quality jumped.
+Version 1 of the system prompt was ~150 tokens with no examples. The judge was confidently wrong on the ambiguous calls. The fix was to **add 4 worked examples** at the end of the prompt covering the common edge cases (parentheticals, differentiators, route mismatches). The prompt grew to ~650 tokens and the decision quality jumped.
 
-### 2. `temperature=0` is necessary, not optional
+### 2. `temperature=0` is not optional
 
-With `temperature=0.3` (the default), the same invoice line would get different decisions across runs. The cache became unreliable because the same hash would have been written from a different decision. **Always temperature=0** for a judge.
+At `temperature=0.3` (the default), the same invoice line got different verdicts across runs. The cache started returning stale results because the same hash pointed to a decision written from a different roll of the dice. **Always temperature=0** for a judge.
 
 ### 3. Cache key needs the model
 
-I shipped the first version without the model in the cache key. Then I A/B tested Haiku vs Gemini and Gemini's decisions started overwriting Haiku's cache entries. The cache was poisoned and I couldn't trust historic data. **Always include the model in the hash.**
+I shipped the first version without the model in the cache key. Then I A/B tested Haiku vs Gemini and Gemini's decisions started overwriting Haiku's entries. The cache was poisoned; I couldn't trust historical data. **Always put the model in the hash.**
 
-### 4. Rate limits on Vercel AI Gateway free tier
+### 4. Rate limits on the Vercel AI Gateway free tier
 
-Vercel's "trial credit" doesn't bypass Anthropic's free-tier rate limits when routed through their gateway. On a large batch run I hit 429s after ~75 calls and the run died with 89% errors. Workarounds: use direct Anthropic for batch jobs, or pay for Vercel's regular tier (not the trial). Detect `HTTP 429` as a kill switch trigger, not just `HTTP 402`.
+Vercel's "trial credit" doesn't bypass Anthropic's free-tier rate limits when calls are routed through their gateway. On a large batch run, I hit 429s after ~75 calls and the run died at 89% errors. Workarounds: use direct Anthropic for batch jobs, or pay for Vercel's regular tier (not the trial). Detect `HTTP 429` as a kill-switch trigger, not just `HTTP 402`.
 
 ### 5. The judge can hallucinate candidates
 
-If you ask the judge `"pick one of these 3 candidates, or say none"`, sometimes it will pick a fourth candidate by hallucinating. The fix is to make the output enum-shaped (`1 | 2 | 3 | "none" | "ambiguous"`) and parse it strictly. If it doesn't match the enum, treat as ambiguous.
+Ask the judge `"pick one of these 3 candidates, or say none"` and sometimes it will pick a fourth by inventing it. The fix: make the output enum-shaped (`1 | 2 | 3 | "none" | "ambiguous"`) and parse it strictly. If it doesn't match the enum, treat it as ambiguous.
 
 ## When to graduate to something more sophisticated
 
-This pattern has a ceiling. If you hit any of these, time to upgrade:
+The pattern has a ceiling. If any of these show up, it's time to level up:
 
-- **The "ambiguous" bucket grows over time** — your distribution is shifting and the deterministic scorer needs an update, or the threshold needs retuning.
-- **The judge starts disagreeing with itself across runs at temperature=0** — likely the prompt is too long or has contradictions. Compress and add examples.
-- **You need to explain the judge's decision to a regulator** — log the reason field and version the prompt, but consider whether deterministic rules might be safer for that compliance domain.
-- **You need to handle 10K+ ambiguous decisions per minute** — batch the LLM calls, or precompute hashes and pre-warm the cache.
+- **The "ambiguous" bucket grows over time.** The distribution is shifting; the deterministic scorer needs an update, or the thresholds need retuning.
+- **The judge disagrees with itself across runs at temperature=0.** The prompt is probably too long or has internal contradictions. Compress and add examples.
+- **You need to explain the judge's decision to a regulator.** Log the reason field and version the prompt — but also ask whether deterministic rules might be safer for that compliance domain.
+- **You need 10K+ ambiguous decisions per minute.** Batch the LLM calls or precompute hashes and pre-warm the cache.
 
 ## Related
 
