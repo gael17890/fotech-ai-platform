@@ -15,7 +15,7 @@ Input ──→ Deterministic scorer ──→ Decision:
 
 You pay LLM cost only on the ambiguous slice, which usually sits around 10–20% of the workload. The result is a system that's **as accurate as the LLM, as fast as the algorithm, and as cheap as the cache hit rate**.
 
-In FOTECH's production matcher, this pattern brought **ambiguity from 11.5% down to 1.1%** in product matching while holding cost at ~$0.0019 per ambiguous decision.
+Running this on the FOTECH matcher took **ambiguity from 11.5% down to 1.1%** while holding cost at ~$0.0019 per ambiguous decision.
 
 ## When it fits
 

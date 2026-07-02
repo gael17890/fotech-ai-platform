@@ -191,7 +191,7 @@ I considered fine-tuning a small model on the (invoice_line → catalog_product)
 
 For this kind of problem — **mapping known strings to known IDs with continuous human-in-the-loop correction** — fine-tuning is over-engineered. The relational database is the right tool.
 
-This isn't a blanket statement against fine-tuning. For tasks that require **changing the model's reasoning style** (always responding in a specific format, internalizing a domain-specific style of summarization), fine-tuning makes sense. For tasks that require **mapping inputs to outputs based on accumulated examples**, a database wins.
+None of this argues against fine-tuning in general. If you need to **change the model's reasoning style** — always responding in a specific format, internalizing a domain-specific summarization style — fine-tuning is the right tool. If you need to **map inputs to outputs based on accumulated examples**, a database wins.
 
 ## Combined effect
 

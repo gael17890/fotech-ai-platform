@@ -93,7 +93,7 @@ The platform handles this — plus a bunch of other pharmacy workflows — by tr
 
 ## What's not here (and why)
 
-A quick note on the boundary I drew:
+Quick note on where I drew the line:
 
 - No real client data. The fixtures are anonymized and the suppliers are labeled `Distributor A/B/C/D`.
 - No detailed regulatory config for Mexico (COFEPRIS). It's mentioned in the docs, not spelled out.

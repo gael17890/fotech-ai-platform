@@ -1,6 +1,6 @@
 # Architecture
 
-A technical overview of how FOTECH is built. Not exhaustive — just enough to make the design choices legible.
+A technical overview of how FOTECH is put together. Not everything, just the parts that matter for the design choices.
 
 ## Mental model
 

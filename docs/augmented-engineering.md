@@ -247,7 +247,7 @@ Concrete things this setup unlocks:
 
 ## What this is NOT
 
-To be clear:
+A few things this setup is not:
 
 - **It's not autonomous.** Every commit is approved by me. Every irreversible action (deploy, DB migration, destructive command) requires explicit confirmation.
 - **It's not a substitute for understanding the code.** I still read every line that gets committed. AI is a typist, not a co-owner of the decision.
